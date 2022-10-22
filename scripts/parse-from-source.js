@@ -1,7 +1,10 @@
 import axios from 'axios';
 import fs from 'fs';
 
-const rawUrl = `https://raw.githubusercontent.com/sudheerj/reactjs-interview-questions/359af1a719f83e7f341cfbeb039147153f1f3b38/README.md`;
+const v1 = '359af1a719f83e7f341cfbeb039147153f1f3b38';
+
+const baseURL = 'https://raw.githubusercontent.com/sudheerj/reactjs-interview-questions/';
+const rawUrl = baseURL + v1 + '/README.md';
 const matcher = /([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)+\.+ ###/;
 
 const urlList = rawUrl.split('/');
@@ -40,13 +43,18 @@ async function run() {
   });
 }
 
-function parseEntry(s, index) {
+function parseEntry(rawStr, index) {
   const id = index;
-  const string = `${id}. ## ` + s.replace('**[⬆ Back to Top](#table-of-contents)**', '').trim();
+  const string =
+    `${id}. ## ` +
+    rawStr
+      .replace('**[⬆ Back to Top](#table-of-contents)**', '')
+      .replace(/\(images\//g, `(${baseURL}${v1}/images/`)
+      .trim();
 
   return {
     id: index,
-    question: string.substring(0, string.indexOf('\n\n')),
-    answer: string.substring(string.indexOf('\n\n')),
+    question: string.substring(0, string.indexOf('\n')),
+    answer: string.substring(string.indexOf('\n')),
   };
 }
