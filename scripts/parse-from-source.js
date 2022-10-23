@@ -28,11 +28,10 @@ async function run() {
     });
   }
 
-  const parsedData = rawData
-    .split(matcher)
-    .filter((s) => parseInt(s).toString() === 'NaN')
-    .map(parseEntry);
-  parsedData.shift();
+  const list = rawData.split(matcher).filter((s) => parseInt(s).toString() === 'NaN');
+  list.shift();
+
+  const parsedData = list.reduce(parseEntry, {});
 
   fs.writeFile(folder + filename + '.json', JSON.stringify(parsedData, null, 4), (err) => {
     if (err) {
@@ -43,8 +42,8 @@ async function run() {
   });
 }
 
-function parseEntry(rawStr, index) {
-  const id = index;
+function parseEntry(total, rawStr, index) {
+  const id = index + 1;
   const string =
     `${id}. ## ` +
     rawStr
@@ -52,9 +51,15 @@ function parseEntry(rawStr, index) {
       .replace(/\(images\//g, `(${baseURL}${v1}/images/`)
       .trim();
 
-  return {
-    id: index,
+  // return {
+  //   id: index,
+  //   question: string.substring(0, string.indexOf('\n')),
+  //   answer: string.substring(string.indexOf('\n')),
+  // };
+  total[id] = {
     question: string.substring(0, string.indexOf('\n')),
     answer: string.substring(string.indexOf('\n')),
   };
+
+  return total;
 }

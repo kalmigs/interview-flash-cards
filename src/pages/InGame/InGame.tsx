@@ -5,17 +5,17 @@ import { QUESTIONS } from '../../data/questions';
 
 function InGame() {
   const { setPage } = useAppContext();
-  const questions = QUESTIONS.v1.value;
+  const questions = QUESTIONS.ReactJS.v1.value;
 
-  const [index, setIndex] = useState<number>(0);
+  const [key, setKey] = useState<number | null>(null);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
 
-  const getRandomIndex = () => {
-    return Math.floor(Math.random() * questions.length);
+  const getRandomKey = () => {
+    return Math.floor(Math.random() * Object.values(questions).length) + 1;
   };
 
   function nextEntry(done = false) {
-    setIndex(getRandomIndex());
+    setKey(getRandomKey());
     setShowAnswer(false);
 
     if (done) {
@@ -45,7 +45,11 @@ function InGame() {
     <div style={{ height: '100vh' }}>
       <div style={{ maxWidth: '800px', padding: '50px', margin: '0 auto' }}>
         <div style={{ height: 'calc(100vh - 150px)' }} onClick={() => setShowAnswer((s) => !s)}>
-          <ReactMarkdown>{questions[index].question + (showAnswer ? questions[index].answer : '')}</ReactMarkdown>
+          {key && (
+            <ReactMarkdown>
+              {questions[key.toString()].question + (showAnswer ? questions[key.toString()].answer : '')}
+            </ReactMarkdown>
+          )}
         </div>
 
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center', height: '50px' }}>
