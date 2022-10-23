@@ -11,7 +11,7 @@ class Storage {
     this.storage = window[storage];
   }
 
-  get(key: Keys): string | any | null {
+  get<T = string>(key: Keys): T | null {
     try {
       const value = this.storage.getItem(String(key));
       const isJson = this.checkJSON(value ?? '');

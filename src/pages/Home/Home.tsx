@@ -1,7 +1,9 @@
 import { useAppContext } from '../../context/AppContext';
+import { QUESTIONS } from '../../data/questions';
+import { ls } from '../../utils/storage/storage';
 
 function Home() {
-  const { setPage, reactJS } = useAppContext();
+  const { setPage, reactJS, setReactJS } = useAppContext();
 
   function getReactJSScore() {
     const total = Object.keys(reactJS ?? {}).length;
@@ -13,10 +15,21 @@ function Home() {
     return `${score}/${total}`;
   }
 
+  function handleReset() {
+    ls.clear();
+
+    const init = QUESTIONS.ReactJS.v1.initState();
+    ls.set('ReactJS', init);
+    setReactJS(init);
+
+    // TODO js
+  }
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <button onClick={() => setPage('InGame')}>START</button>
+        <button onClick={handleReset}>RESET</button>
         <div>ReactJS: {getReactJSScore()}</div>
       </div>
     </div>

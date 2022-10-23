@@ -18,14 +18,13 @@ function Wrapper() {
   const { page, setReactJS } = useAppContext();
 
   useEffect(() => {
-    let reactJS: QuestionsState | null = ls.get('ReactJS');
-    let javaScript: QuestionsState | null = ls.get('JavaScript');
+    let reactJS = ls.get<QuestionsState>('ReactJS');
+    let javaScript = ls.get<QuestionsState>('JavaScript');
 
     if (reactJS == null) {
-      const obj: QuestionsState = {};
-      Object.keys(QUESTIONS.ReactJS.v1.value).forEach((key) => (obj[key] = { isDone: false }));
-      ls.set('ReactJS', obj);
-      setReactJS(obj);
+      const init = QUESTIONS.ReactJS.v1.initState();
+      ls.set('ReactJS', init);
+      setReactJS(init);
     } else {
       setReactJS(reactJS);
     }
