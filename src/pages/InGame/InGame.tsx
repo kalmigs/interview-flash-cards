@@ -2,44 +2,56 @@ import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useAppContext } from '../../context/AppContext';
 import { QUESTIONS } from '../../data/questions';
+import { ls } from '../../utils/storage/storage';
 
 function InGame() {
-  const { setPage } = useAppContext();
+  const { setPage, reactJS, setReactJS } = useAppContext();
   const questions = QUESTIONS.ReactJS.v1.value;
 
-  const [key, setKey] = useState<number | null>(null);
+  const [key, setKey] = useState<string | null>(null);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
-
-  const getRandomKey = () => {
-    return Math.floor(Math.random() * Object.values(questions).length) + 1;
-  };
-
-  function nextEntry(done = false) {
-    setKey(getRandomKey());
-    setShowAnswer(false);
-
-    if (done) {
-      console.log('handle done');
-    }
-  }
-
-  function closeModal(e: KeyboardEvent) {
-    console.log(e);
-    if (e.key === ' ') {
-      setShowAnswer((s) => !s);
-    } else if (e.key === 'Enter' || e.key === 'ArrowRight') {
-      nextEntry(true);
-    }
-  }
 
   useEffect(() => {
     nextEntry();
-    document.addEventListener('keydown', closeModal);
-
-    return () => {
-      document.removeEventListener('keydown', closeModal);
-    };
   }, []);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [key]);
+
+  const getRandomKey = () => {
+    const list = Object.entries(reactJS ?? {}).filter(([, value]) => !value.isDone);
+    const index = Math.floor(Math.random() * list.length);
+
+    return list[index][0];
+  };
+
+  function nextEntry(done = false) {
+    if (done && key) {
+      const obj = { ...reactJS };
+      obj[key] = { isDone: true };
+      setReactJS(obj);
+      ls.set('ReactJS', obj);
+    }
+
+    const k = getRandomKey();
+
+    setKey(k);
+    setShowAnswer(false);
+  }
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === ' ') {
+      setShowAnswer((s) => !s);
+    } else if (e.key === 'ArrowRight') {
+      nextEntry();
+    } else if (e.key === 'Enter') {
+      nextEntry(true);
+    }
+  }
 
   return (
     <div style={{ height: '100vh' }}>
