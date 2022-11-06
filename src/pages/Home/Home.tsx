@@ -1,3 +1,4 @@
+import Button from '../../components/ui/Button';
 import { useAppContext } from '../../context/AppContext';
 import { QUESTIONS } from '../../data/questions';
 import { ls } from '../../utils/storage/storage';
@@ -28,8 +29,10 @@ function Home() {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <button onClick={() => setPage('InGame')}>START</button>
-        <button onClick={handleReset}>RESET</button>
+        <Button onClick={() => setPage('InGame')} variant="primary">START</Button>
+        <Button onClick={handleReset} variant="secondary">
+          RESET
+        </Button>
         <div>ReactJS: {getReactJSScore()}</div>
       </div>
     </div>
