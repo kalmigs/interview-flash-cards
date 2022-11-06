@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { a11yDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import Button from '../../components/ui/Button';
 import { useAppContext } from '../../context/AppContext';
 import { QUESTIONS } from '../../data/questions';
 import { ls } from '../../utils/storage/storage';
@@ -58,19 +61,53 @@ function InGame() {
       <div style={{ maxWidth: '800px', padding: '50px', margin: '0 auto' }}>
         <div style={{ height: 'calc(100vh - 150px)' }} onClick={() => setShowAnswer((s) => !s)}>
           {key && (
-            <ReactMarkdown>
-              {questions[key.toString()].question + (showAnswer ? questions[key.toString()].answer : '')}
-            </ReactMarkdown>
+            <ReactMarkdown
+              children={questions[key.toString()].question + (showAnswer ? questions[key.toString()].answer : '')}
+              components={{
+                code({ node, inline, className, children, ...props }) {
+                  const match = /language-(\w+)/.exec(className || '');
+                  return !inline && match ? (
+                    <div style={{ marginBottom: '16px' }}>
+                      <SyntaxHighlighter
+                        children={String(children).replace(/\n$/, '')}
+                        style={a11yDark as any}
+                        language={match[1]}
+                        PreTag="div"
+                        {...props}
+                      />
+                    </div>
+                  ) : (
+                    <code
+                      className={className}
+                      {...props}
+                      style={{ backgroundColor: 'rgba(99,110,123,0.4)', padding: '0.2em 0.4em', borderRadius: '6px' }}
+                    >
+                      {children}
+                    </code>
+                  );
+                },
+                h2: ({ node, ...props }) => (
+                  <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+                    <h2 style={{ color: '#0ea5e9' }} {...props} />
+                  </div>
+                ),
+                p: ({ node, ...props }) => <p style={{ marginBottom: '16px', lineHeight: '24px' }} {...props} />,
+                li: ({ node, ...props }) => <li style={{ marginBottom: '4px', lineHeight: '24px' }} {...props} />,
+                ol: ({ node, ...props }) => <ol style={{ marginBottom: '16px' }} {...props} />,
+                a: ({ node, ...props }) => <a style={{ color: '#0ea5e9' }} {...props} />,
+              }}
+            />
           )}
         </div>
 
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center', height: '50px' }}>
-          <button onClick={() => setPage('Home')}>Go Back</button>
-          <button style={{ width: '100px' }} onClick={() => setShowAnswer((s) => !s)}>
+          <Button variant='primary' onClick={() => setPage('Home')}>Go Back</Button>
+          <Button variant='primary' onClick={() => setShowAnswer((s) => !s)}>
+            {/* style={{ width: '100px' }}  */}
             {showAnswer ? 'Hide' : 'Show'} Answer
-          </button>
-          <button onClick={() => nextEntry(true)}>Done</button>
-          <button onClick={() => nextEntry()}>Again</button>
+          </Button>
+          <Button variant='primary' onClick={() => nextEntry(true)}>Done</Button>
+          <Button variant='primary' onClick={() => nextEntry()}>Again</Button>
         </div>
       </div>
     </div>

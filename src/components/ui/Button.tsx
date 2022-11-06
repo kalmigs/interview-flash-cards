@@ -4,7 +4,7 @@ import styles from './Button.module.css';
 
 interface Props {
   onClick: (...args: any[]) => any;
-  children?: React.ReactElement | string;
+  children?: React.ReactNode;
   variant?: 'basic' | 'link' | 'secondary' | 'danger' | 'primary' | 'outline' | 'primary';
   className?: string;
   label?: string;
@@ -27,7 +27,7 @@ const renderChildren = (props: Props) => {
   return 'Button';
 };
 
-function Button(props: Props) {
+const Button: React.FC<Props> = (props) => {
   let { className, size, variant, disabled, disabledClassName } = props;
   className = className ?? '';
   variant = variant ?? 'basic';
@@ -51,6 +51,6 @@ function Button(props: Props) {
       {renderChildren(props)}
     </div>
   );
-}
+};
 
 export default Button;
