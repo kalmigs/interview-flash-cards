@@ -121,11 +121,11 @@ function InGame() {
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center', height: '80px' }}>
-        <Button variant="primary" onClick={() => setShowAnswer((s) => !s)}>
-          {showAnswer ? 'Hide' : 'Show'} Answer
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80px' }}>
+        <Button style={{ marginRight: '10px' }} variant="primary" onClick={() => setShowAnswer((s) => !s)}>
+          {showAnswer ? 'Hide' : 'Show'}
         </Button>
-        <Button variant="primary" onClick={() => nextEntry(true)}>
+        <Button style={{ marginRight: '10px' }} variant="primary" onClick={() => nextEntry(true)}>
           Done
         </Button>
         <Button variant="primary" onClick={() => nextEntry()}>

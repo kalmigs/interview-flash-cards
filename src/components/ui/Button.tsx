@@ -7,6 +7,7 @@ interface Props {
   children?: React.ReactNode;
   variant?: 'basic' | 'link' | 'secondary' | 'danger' | 'primary' | 'outline' | 'primary';
   className?: string;
+  style?: React.CSSProperties;
   label?: string;
   size?: 'medium' | 'large';
   disabledClassName?: string;
@@ -28,7 +29,7 @@ const renderChildren = (props: Props) => {
 };
 
 const Button: React.FC<Props> = (props) => {
-  let { className, size, variant, disabled, disabledClassName } = props;
+  let { className, style, size, variant, disabled, disabledClassName } = props;
   className = className ?? '';
   variant = variant ?? 'basic';
   size = size ?? 'medium';
@@ -47,7 +48,7 @@ const Button: React.FC<Props> = (props) => {
   };
 
   return (
-    <div onClick={handleButtonClick} className={_className}>
+    <div onClick={handleButtonClick} className={_className} style={style ?? {}}>
       {renderChildren(props)}
     </div>
   );

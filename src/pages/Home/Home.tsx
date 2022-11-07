@@ -6,7 +6,7 @@ import { ls } from '../../utils/storage/storage';
 function Home() {
   const { setPage, reactJS, setReactJS } = useAppContext();
 
-  function getReactJSScore() {
+  function getReactJsScore() {
     const total = Object.keys(reactJS ?? {}).length;
     const score = Object.values(reactJS ?? {}).reduce((total, val) => {
       if (val.isDone) return total + 1;
@@ -28,12 +28,14 @@ function Home() {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <Button onClick={() => setPage('InGame')} variant="primary">START</Button>
-        <Button onClick={handleReset} variant="secondary">
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Button style={{ marginBottom: '10px' }} onClick={() => setPage('InGame')} variant="primary">
+          START
+        </Button>
+        <Button style={{ marginBottom: '10px' }} onClick={handleReset} variant="secondary">
           RESET
         </Button>
-        <div>ReactJS: {getReactJSScore()}</div>
+        <div>ReactJS: {getReactJsScore()}</div>
       </div>
     </div>
   );
