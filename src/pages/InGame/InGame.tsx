@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { a11yDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import BackIcon from '../../assets/BackIcon';
 import Button from '../../components/ui/Button';
 import { useAppContext } from '../../context/AppContext';
 import { QUESTIONS } from '../../data/questions';
@@ -57,9 +58,28 @@ function InGame() {
   }
 
   return (
-    <div style={{ height: '100vh' }}>
-      <div style={{ maxWidth: '800px', padding: '50px', margin: '0 auto' }}>
-        <div style={{ height: 'calc(100vh - 150px)' }} onClick={() => setShowAnswer((s) => !s)}>
+    <div>
+      <div style={{ height: '80px', width: '80px' }}>
+        <div
+          style={{ height: '80px', width: '80px', padding: '15px', cursor: 'pointer' }}
+          onClick={() => setPage('Home')}
+        >
+          <BackIcon fill="#d4d4d4" />
+        </div>
+      </div>
+
+      <div
+        style={{
+          maxWidth: '820px',
+          padding: '0 10px',
+          margin: '0 auto',
+          height: 'calc(100vh - 160px)',
+          overflowX: 'hidden',
+          overflowY: 'auto',
+        }}
+        onClick={() => setShowAnswer((s) => !s)}
+      >
+        <div>
           {key && (
             <ReactMarkdown
               children={questions[key.toString()].question + (showAnswer ? questions[key.toString()].answer : '')}
@@ -99,16 +119,18 @@ function InGame() {
             />
           )}
         </div>
+      </div>
 
-        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center', height: '50px' }}>
-          <Button variant='primary' onClick={() => setPage('Home')}>Go Back</Button>
-          <Button variant='primary' onClick={() => setShowAnswer((s) => !s)}>
-            {/* style={{ width: '100px' }}  */}
-            {showAnswer ? 'Hide' : 'Show'} Answer
-          </Button>
-          <Button variant='primary' onClick={() => nextEntry(true)}>Done</Button>
-          <Button variant='primary' onClick={() => nextEntry()}>Again</Button>
-        </div>
+      <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center', height: '80px' }}>
+        <Button variant="primary" onClick={() => setShowAnswer((s) => !s)}>
+          {showAnswer ? 'Hide' : 'Show'} Answer
+        </Button>
+        <Button variant="primary" onClick={() => nextEntry(true)}>
+          Done
+        </Button>
+        <Button variant="primary" onClick={() => nextEntry()}>
+          Again
+        </Button>
       </div>
     </div>
   );
