@@ -113,7 +113,7 @@ function InGame() {
                 ),
                 p: ({ node, ...props }) => <p style={{ marginBottom: '16px', lineHeight: '24px' }} {...props} />,
                 li: ({ node, ...props }) => <li style={{ marginBottom: '4px', lineHeight: '24px' }} {...props} />,
-                ol: ({ node, ...props }) => <ol style={{ marginBottom: '16px' }} {...props} />,
+                ol: ({ node, ...props }) => <ol style={{ marginBottom: '16px', marginLeft:'32px' }} {...props} />,
                 a: ({ node, ...props }) => <a style={{ color: '#0ea5e9' }} {...props} />,
               }}
             />
